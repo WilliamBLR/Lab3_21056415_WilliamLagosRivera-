@@ -12,6 +12,11 @@ public class Main {
         ArrayList<Mazo> inventarioMazosGlobal;
         ArrayList<Ataque> inventarioAtaquesGlobal;
         int generadorId;
+        
+        //variablesParaElJuegoActivo
+        Mazo mazoPrueba;
+        Jugador jugadorPrueba;
+        CartaPokemon cartaPruebaRobo;
 
         //inicializacionDeVariables
         entradaConsola = new Scanner(System.in);
@@ -22,16 +27,24 @@ public class Main {
         inventarioAtaquesGlobal = new ArrayList<Ataque>();
         generadorId = 1;
 
+        //inicializacionDeEntornosDePrueba
+        mazoPrueba = new Mazo(99);
+        jugadorPrueba = new Jugador(1, "Ash Ketchum", mazoPrueba);
+        cartaPruebaRobo = new CartaPokemon(999, "Pikachu", 50, "Electrico");
+
         //bucleWhileParaIterarElMenu
         while (sistemaEjecutandose) {
             System.out.println("######## POKEMON TCG - Paradigmas OOP ########");
             System.out.println("Bienvenido. Seleccione una opcion:");
             System.out.println("--- Construccion / Setup ---");
-            System.out.println("1. Crear carta de energia (RF03)");
-            System.out.println("2. Crear ataque (RF04)");
-            System.out.println("3. Crear carta Pokemon (RF05)");
-            System.out.println("4. Crear carta de entrenador (RF06)");
-            System.out.println("5. Crear mazo a partir de cartas (RF07)");
+            System.out.println("1. Crear carta de energia");
+            System.out.println("2. Crear ataque");
+            System.out.println("3. Crear carta Pokemon");
+            System.out.println("4. Crear carta de entrenador");
+            System.out.println("5. Crear mazo a partir de cartas");
+            System.out.println("--- Durante la partida ---");
+            System.out.println("9. Mostrar estado del juego (RF10)");
+            System.out.println("12. Robar carta del mazo (RF13)");
             System.out.println("0. Salir");
             System.out.print("\nIngrese su opcion: ");
 
@@ -68,6 +81,14 @@ public class Main {
                 inventarioMazosGlobal.add(new Mazo(generadorId));
                 System.out.println("Mazo vacio creado exitosamente.");
                 generadorId = generadorId + 1;
+
+            } else if (opcionSeleccionada == 9) {
+                System.out.println("[Sistema] Mostrando el estado del juego...");
+                jugadorPrueba.mostrarEstado();
+
+            } else if (opcionSeleccionada == 12) {
+                System.out.println("[Sistema] Accion de robar carta activada...");
+                jugadorPrueba.robarCarta(cartaPruebaRobo);
 
             } else if (opcionSeleccionada == 0) {
                 System.out.println("[Sistema] Cerrando el juego... !Adios!");
