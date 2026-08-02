@@ -59,4 +59,63 @@ public class Jugador {
         //retornoExplicitoAlFinalDeLaFuncion
         return;
     }
+
+    //metodoParaJugarPokemonALaBanca
+    public void jugarPokemonBanca(CartaPokemon nuevoPokemon) {
+        //variablesLocalesDefinidasAlInicioDeLaFuncion
+        int limiteBanca;
+        int cantidadActual;
+
+        limiteBanca = 5;
+        cantidadActual = this.banca.size();
+
+        //condicionalIfElseDirigeElFlujo
+        if (nuevoPokemon != null) {
+            if (cantidadActual < limiteBanca) {
+                this.banca.add(nuevoPokemon);
+                System.out.println(this.nombre + " ha jugado a " + nuevoPokemon.getNombre() + " a la banca.");
+            } else {
+                System.out.println("La banca ya esta llena (limite de 5 Pokemon).");
+            }
+        } else {
+            System.out.println("Error: El Pokemon a jugar no es valido.");
+        }
+
+        //retornoExplicitoAlFinalDeLaFuncion
+        return;
+    }
+
+    //metodoParaCambiarPokemonActivo
+    public void cambiarPokemonActivo(int indiceBanca) {
+        //variablesLocalesDefinidasAlInicioDeLaFuncion
+        CartaPokemon pokemonSeleccionado;
+        CartaPokemon pokemonAnterior;
+
+        //condicionalIfElseDirigeElFlujo
+        if (indiceBanca >= 0) {
+            if (indiceBanca < this.banca.size()) {
+                pokemonSeleccionado = this.banca.get(indiceBanca);
+                pokemonAnterior = this.pokemonActivo;
+
+                //elPokemonSeleccionadoPasaASerElActivo
+                this.pokemonActivo = pokemonSeleccionado;
+                this.banca.remove(indiceBanca);
+
+                //siHabiaUnPokemonActivoAnteriorRegresaALaBanca
+                if (pokemonAnterior != null) {
+                    this.banca.add(pokemonAnterior);
+                    System.out.println(pokemonAnterior.getNombre() + " regresa a la banca.");
+                }
+
+                System.out.println(this.pokemonActivo.getNombre() + " es ahora el Pokemon activo.");
+            } else {
+                System.out.println("Error: El indice de la banca es invalido o la banca esta vacia.");
+            }
+        } else {
+            System.out.println("Error: El indice debe ser mayor o igual a cero.");
+        }
+
+        //retornoExplicitoAlFinalDeLaFuncion
+        return;
+    }
 }

@@ -44,6 +44,8 @@ public class Main {
             System.out.println("5. Crear mazo a partir de cartas");
             System.out.println("--- Durante la partida ---");
             System.out.println("9. Mostrar estado del juego (RF10)");
+            System.out.println("10. Jugar Pokemon a la banca (RF11)");
+            System.out.println("11. Cambiar Pokemon activo (RF12)");
             System.out.println("12. Robar carta del mazo (RF13)");
             System.out.println("0. Salir");
             System.out.print("\nIngrese su opcion: ");
@@ -85,6 +87,16 @@ public class Main {
             } else if (opcionSeleccionada == 9) {
                 System.out.println("[Sistema] Mostrando el estado del juego...");
                 jugadorPrueba.mostrarEstado();
+
+            } else if (opcionSeleccionada == 10) {
+                System.out.println("[Sistema] Jugando Pokemon a la banca...");
+                //pasamosLaCartaDePruebaParaSimularLaAccion
+                jugadorPrueba.jugarPokemonBanca(cartaPruebaRobo);
+
+            } else if (opcionSeleccionada == 11) {
+                System.out.println("[Sistema] Cambiando Pokemon activo...");
+                //intentamosSacarAlPokemonEnLaPosicionCeroDeLaBanca
+                jugadorPrueba.cambiarPokemonActivo(0);
 
             } else if (opcionSeleccionada == 12) {
                 System.out.println("[Sistema] Accion de robar carta activada...");
