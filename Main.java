@@ -17,6 +17,7 @@ public class Main {
         Mazo mazoPrueba;
         Jugador jugadorPrueba;
         CartaPokemon cartaPruebaRobo;
+        Ataque ataquePrueba;
 
         //inicializacionDeVariables
         entradaConsola = new Scanner(System.in);
@@ -31,6 +32,10 @@ public class Main {
         mazoPrueba = new Mazo(99);
         jugadorPrueba = new Jugador(1, "Ash Ketchum", mazoPrueba);
         cartaPruebaRobo = new CartaPokemon(999, "Pikachu", 50, "Electrico");
+        ataquePrueba = new Ataque(888, "Impactrueno", 40);
+        
+        //leEnsenamosElAtaqueAlPokemonDePrueba
+        cartaPruebaRobo.aprenderAtaque(ataquePrueba);
 
         //bucleWhileParaIterarElMenu
         while (sistemaEjecutandose) {
@@ -47,6 +52,8 @@ public class Main {
             System.out.println("10. Jugar Pokemon a la banca (RF11)");
             System.out.println("11. Cambiar Pokemon activo (RF12)");
             System.out.println("12. Robar carta del mazo (RF13)");
+            System.out.println("13. Unir energia a un Pokemon (RF14)");
+            System.out.println("17. Usar ataque del activo (RF18)");
             System.out.println("0. Salir");
             System.out.print("\nIngrese su opcion: ");
 
@@ -62,7 +69,7 @@ public class Main {
 
             } else if (opcionSeleccionada == 2) {
                 System.out.println("[Sistema] Has seleccionado: Crear ataque.");
-                inventarioAtaquesGlobal.add(new Ataque(generadorId, "Impactrueno", 40));
+                inventarioAtaquesGlobal.add(new Ataque(generadorId, "Llamarada", 80));
                 System.out.println("Ataque creado exitosamente.");
                 generadorId = generadorId + 1;
 
@@ -90,17 +97,25 @@ public class Main {
 
             } else if (opcionSeleccionada == 10) {
                 System.out.println("[Sistema] Jugando Pokemon a la banca...");
-                //pasamosLaCartaDePruebaParaSimularLaAccion
                 jugadorPrueba.jugarPokemonBanca(cartaPruebaRobo);
 
             } else if (opcionSeleccionada == 11) {
                 System.out.println("[Sistema] Cambiando Pokemon activo...");
-                //intentamosSacarAlPokemonEnLaPosicionCeroDeLaBanca
                 jugadorPrueba.cambiarPokemonActivo(0);
 
             } else if (opcionSeleccionada == 12) {
                 System.out.println("[Sistema] Accion de robar carta activada...");
                 jugadorPrueba.robarCarta(cartaPruebaRobo);
+                
+            } else if (opcionSeleccionada == 13) {
+                System.out.println("[Sistema] Uniendo energia al Pokemon activo...");
+                //simulamosLaUnionDeUnaEnergiaElectrica
+                jugadorPrueba.unirEnergiaActivo(new CartaEnergia(777, "Energia Electrica", "Electrico"));
+                
+            } else if (opcionSeleccionada == 17) {
+                System.out.println("[Sistema] Ejecutando ataque del Pokemon activo...");
+                //ejecutamosElAtaqueEnElIndiceCeroQueLeEnsenamosArriba
+                jugadorPrueba.atacarConActivo(0);
 
             } else if (opcionSeleccionada == 0) {
                 System.out.println("[Sistema] Cerrando el juego... !Adios!");

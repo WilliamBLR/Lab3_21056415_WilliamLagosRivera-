@@ -118,4 +118,42 @@ public class Jugador {
         //retornoExplicitoAlFinalDeLaFuncion
         return;
     }
+
+
+
+//metodoParaUnirEnergiaAlActivo
+    public void unirEnergiaActivo(CartaEnergia energia) {
+        //condicionalIfElseDirigeElFlujo
+        if (this.pokemonActivo != null) {
+            if (energia != null) {
+                this.pokemonActivo.unirEnergia(energia);
+            } else {
+                System.out.println("Error: Carta de energia invalida.");
+            }
+        } else {
+            System.out.println("Error: No hay un Pokemon activo para unirle energia.");
+        }
+        
+        //retornoExplicitoAlFinalDeLaFuncion
+        return;
+    }
+
+    //metodoParaAtacarConElActivo
+    public void atacarConActivo(int indiceAtaque) {
+        //condicionalIfElseDirigeElFlujo
+        if (this.pokemonActivo != null) {
+            this.pokemonActivo.atacar(indiceAtaque);
+        } else {
+            System.out.println("Error: No hay un Pokemon activo para realizar el ataque.");
+        }
+        
+        //retornoExplicitoAlFinalDeLaFuncion
+        return;
+    }
+
+
+
+
+
+
 }
