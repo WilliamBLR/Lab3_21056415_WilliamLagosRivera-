@@ -72,28 +72,70 @@ public class Main {
 
             //condicionalIfElseIfElseDirigeElFlujo
             if (opcionSeleccionada == 1) {
+                //variablesLocalesDefinidasAlInicioDeLaFuncion
+                String nombreEnergia;
+                String tipoEnergia;
+
                 System.out.println("[Sistema] Has seleccionado: Crear carta de energia.");
-                inventarioCartasGlobal.add(new CartaEnergia(generadorId, "Energia Fuego", "Fuego"));
-                System.out.println("Carta creada exitosamente.");
+                System.out.print("Ingrese el nombre de la carta: ");
+                nombreEnergia = entradaConsola.nextLine();
+                System.out.print("Ingrese el tipo de energia (Fuego, Agua, etc.): ");
+                tipoEnergia = entradaConsola.nextLine();
+
+                inventarioCartasGlobal.add(new CartaEnergia(generadorId, nombreEnergia, tipoEnergia));
+                System.out.println("Carta " + nombreEnergia + " creada exitosamente.");
                 generadorId = generadorId + 1;
 
             } else if (opcionSeleccionada == 2) {
+                //variablesLocalesDefinidasAlInicioDeLaFuncion
+                String nombreAtaque;
+                int danoAtaque;
+
                 System.out.println("[Sistema] Has seleccionado: Crear ataque.");
-                inventarioAtaquesGlobal.add(new Ataque(generadorId, "Llamarada", 80));
-                System.out.println("Ataque creado exitosamente.");
+                System.out.print("Ingrese el nombre del ataque: ");
+                nombreAtaque = entradaConsola.nextLine();
+                System.out.print("Ingrese el dano base del ataque: ");
+                danoAtaque = entradaConsola.nextInt();
+                entradaConsola.nextLine(); //limpiarElBufferDeEntrada
+
+                inventarioAtaquesGlobal.add(new Ataque(generadorId, nombreAtaque, danoAtaque));
+                System.out.println("Ataque " + nombreAtaque + " creado exitosamente.");
                 generadorId = generadorId + 1;
 
             } else if (opcionSeleccionada == 3) {
+                //variablesLocalesDefinidasAlInicioDeLaFuncion
+                String nombrePokemon;
+                int hpPokemon;
+                String tipoPokemon;
+
                 System.out.println("[Sistema] Has seleccionado: Crear carta Pokemon.");
-                inventarioCartasGlobal.add(new CartaPokemon(generadorId, "Charmander", 60, "Fuego"));
-                System.out.println("Pokemon creado exitosamente.");
+                System.out.print("Ingrese el nombre del Pokemon: ");
+                nombrePokemon = entradaConsola.nextLine();
+                System.out.print("Ingrese los HP (Puntos de Vida): ");
+                hpPokemon = entradaConsola.nextInt();
+                entradaConsola.nextLine(); //limpiarElBufferDeEntrada
+                System.out.print("Ingrese el tipo (Fuego, Agua, etc.): ");
+                tipoPokemon = entradaConsola.nextLine();
+
+                inventarioCartasGlobal.add(new CartaPokemon(generadorId, nombrePokemon, hpPokemon, tipoPokemon));
+                System.out.println("Pokemon " + nombrePokemon + " creado exitosamente.");
                 generadorId = generadorId + 1;
 
             } else if (opcionSeleccionada == 4) {
+                //variablesLocalesDefinidasAlInicioDeLaFuncion
+                String nombreEntrenador;
+                String efectoEntrenador;
+
                 System.out.println("[Sistema] Has seleccionado: Crear carta de entrenador.");
-                inventarioCartasGlobal.add(new CartaEntrenador(generadorId, "Pocion", "Cura 30 de dano"));
-                System.out.println("Entrenador creado exitosamente.");
+                System.out.print("Ingrese el nombre del entrenador o item: ");
+                nombreEntrenador = entradaConsola.nextLine();
+                System.out.print("Describa el efecto de la carta: ");
+                efectoEntrenador = entradaConsola.nextLine();
+
+                inventarioCartasGlobal.add(new CartaEntrenador(generadorId, nombreEntrenador, efectoEntrenador));
+                System.out.println("Entrenador " + nombreEntrenador + " creado exitosamente.");
                 generadorId = generadorId + 1;
+
 
             } else if (opcionSeleccionada == 5) {
                 System.out.println("[Sistema] Has seleccionado: Crear mazo.");
