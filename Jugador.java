@@ -151,7 +151,52 @@ public class Jugador {
         return;
     }
 
+//metodoParaEvolucionarElPokemonActivo
+    public void evolucionarActivo(CartaPokemon nuevaFase) {
+        //condicionalIfElseDirigeElFlujo
+        if (this.pokemonActivo != null) {
+            if (nuevaFase != null) {
+                System.out.println("!Que esta pasando! " + this.pokemonActivo.getNombre() + " esta evolucionando a " + nuevaFase.getNombre() + "!");
+                //reemplazamosElPokemonActivoPorSuEvolucion
+                this.pokemonActivo = nuevaFase;
+            } else {
+                System.out.println("Error: La carta de evolucion no es valida.");
+            }
+        } else {
+            System.out.println("Error: No hay un Pokemon activo para evolucionar.");
+        }
+        
+        //retornoExplicitoAlFinalDeLaFuncion
+        return;
+    }
 
+    //metodoParaUsarUnaCartaDeEntrenador
+    public void usarEntrenador(CartaEntrenador cartaEntrenador) {
+        //condicionalIfElseDirigeElFlujo
+        if (cartaEntrenador != null) {
+            System.out.println(this.nombre + " va a usar una carta de Entrenador de su mano...");
+            //llamamosAlMetodoJugarQueHeredaDeCarta
+            cartaEntrenador.jugar();
+        } else {
+            System.out.println("Error: La carta de entrenador no es valida.");
+        }
+        
+        //retornoExplicitoAlFinalDeLaFuncion
+        return;
+    }
+
+    //metodoParaUsarHabilidadDelActivo
+    public void usarHabilidadActivo() {
+        //condicionalIfElseDirigeElFlujo
+        if (this.pokemonActivo != null) {
+            this.pokemonActivo.usarHabilidad();
+        } else {
+            System.out.println("Error: No hay un Pokemon activo para usar una habilidad.");
+        }
+        
+        //retornoExplicitoAlFinalDeLaFuncion
+        return;
+    }
 
 
 

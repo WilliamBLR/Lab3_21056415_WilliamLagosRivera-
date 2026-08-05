@@ -31,4 +31,33 @@ public class Mazo {
         //retornoExplicitoAlFinalDeLaFuncion
         return;
     }
+
+    //metodoParaBarajarElMazo
+    public void barajar() {
+        //variablesLocalesDefinidasAlInicioDeLaFuncion
+        int totalCartas;
+        int indiceAleatorio;
+        Carta cartaTemporal;
+
+        totalCartas = this.cartas.size();
+
+        //condicionalIfElseDirigeElFlujo
+        if (totalCartas > 0) {
+            //bucleForParaIntercambiarPosiciones
+            for (int i = 0; i < totalCartas; i = i + 1) {
+                indiceAleatorio = (int) (Math.random() * totalCartas);
+                cartaTemporal = this.cartas.get(i);
+                
+                //intercambiamosLaCartaEnLaPosicionActualPorUnaAlAzar
+                this.cartas.set(i, this.cartas.get(indiceAleatorio));
+                this.cartas.set(indiceAleatorio, cartaTemporal);
+            }
+            System.out.println("El mazo ha sido barajado exitosamente al azar.");
+        } else {
+            System.out.println("Error: El mazo esta vacio, no se puede barajar.");
+        }
+
+        //retornoExplicitoAlFinalDeLaFuncion
+        return;
+    }
 }

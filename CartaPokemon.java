@@ -6,6 +6,7 @@ public class CartaPokemon extends Carta {
     private String tipo;
     private ArrayList<CartaEnergia> energiasUnidas;
     private ArrayList<Ataque> ataquesDisponibles;
+    private String habilidad;
 
     //constructorDeLaClaseHija
     public CartaPokemon(int id, String nombre, int hp, String tipo) {
@@ -14,6 +15,7 @@ public class CartaPokemon extends Carta {
         this.tipo = tipo;
         this.energiasUnidas = new ArrayList<CartaEnergia>();
         this.ataquesDisponibles = new ArrayList<Ataque>();
+        this.habilidad = null; //inicialmenteSinHabilidad
     }
 
     //metodoParaAgregarEnergia
@@ -60,6 +62,25 @@ public class CartaPokemon extends Carta {
             }
         } else {
             System.out.println("Error: El indice debe ser mayor o igual a cero.");
+        }
+        
+        //retornoExplicitoAlFinalDeLaFuncion
+        return;
+    }
+
+    //metodoParaAsignarHabilidad
+    public void setHabilidad(String nuevaHabilidad) {
+        this.habilidad = nuevaHabilidad;
+        return;
+    }
+
+    //metodoParaUsarLaHabilidad
+    public void usarHabilidad() {
+        //condicionalIfElseDirigeElFlujo
+        if (this.habilidad != null) {
+            System.out.println(this.nombre + " activa su habilidad especial: " + this.habilidad);
+        } else {
+            System.out.println(this.nombre + " no tiene ninguna habilidad especial asignada.");
         }
         
         //retornoExplicitoAlFinalDeLaFuncion
