@@ -1,15 +1,16 @@
 import java.util.ArrayList;
 
 public class Jugador {
-    //variablesDefinidasExplicitamenteAlInicio
+    //definiendo las variables de la clase para cumplir con la pauta
     private int id;
     private String nombre;
     private Mazo mazoActual;
     private ArrayList<Carta> mano;
     private ArrayList<CartaPokemon> banca;
     private CartaPokemon pokemonActivo;
+    private ArrayList<Carta> pilaDescarte;
 
-    //constructorDeLaClase
+    //constructor de la clase para instanciar al jugador
     public Jugador(int id, String nombre, Mazo mazoActual) {
         this.id = id;
         this.nombre = nombre;
@@ -17,14 +18,15 @@ public class Jugador {
         this.mano = new ArrayList<Carta>();
         this.banca = new ArrayList<CartaPokemon>();
         this.pokemonActivo = null;
+        this.pilaDescarte = new ArrayList<Carta>(); //iniciamos la pila vacia porque asi arranca el juego
     }
 
-    //metodoParaRobarCarta
+    //metodo para robar una carta del mazo
     public void robarCarta(Carta nuevaCarta) {
-        //variablesLocalesDefinidasAlInicioDeLaFuncion
+        //variables locales al principio como lo pide el profe
         boolean puedeRobar;
 
-        //condicionalIfElseDirigeElFlujo
+        //el tipico if else para guiar el flujo y que no se nos caiga el programa
         if (nuevaCarta != null) {
             puedeRobar = true;
             this.mano.add(nuevaCarta);
@@ -34,18 +36,18 @@ public class Jugador {
             System.out.println("Error: No hay cartas validas para robar.");
         }
 
-        //retornoExplicitoAlFinalDeLaFuncion
+        //retorno explicito para asegurar la buena practica
         return;
     }
 
-    //metodoParaMostrarEstadoDelJugador
+    //metodo para mostrar como va el jugador en la partida
     public void mostrarEstado() {
-        //variablesLocalesDefinidasAlInicioDeLaFuncion
+        //declarando variables locales primero
         String nombreActivo;
 
         System.out.println("--- Estado del Jugador: " + this.nombre + " ---");
 
-        //condicionalIfElseDirigeElFlujo
+        //verificamos si hay un pokemon activo para no imprimir un null y mandarnos un condoro
         if (this.pokemonActivo != null) {
             nombreActivo = this.pokemonActivo.getNombre();
             System.out.println("Pokemon Activo: " + nombreActivo);
@@ -55,53 +57,69 @@ public class Jugador {
 
         System.out.println("Cartas en la mano: " + this.mano.size());
         System.out.println("Pokemon en la banca: " + this.banca.size());
+        System.out.println("Cartas en la pila de descarte: " + this.pilaDescarte.size());
 
-        //retornoExplicitoAlFinalDeLaFuncion
+        //retornamos explicito al final
         return;
     }
 
-    //metodoParaJugarPokemonALaBanca
-    public void jugarPokemonBanca(CartaPokemon nuevoPokemon) {
-        //variablesLocalesDefinidasAlInicioDeLaFuncion
+    //metodo para jugar un pokemon a la banca directamente desde la mano
+    public void jugarPokemonBanca(int indiceMano) {
+        //variables locales al inicio siempre
         int limiteBanca;
         int cantidadActual;
+        Carta cartaSeleccionada;
+        CartaPokemon nuevoPokemon;
 
         limiteBanca = 5;
         cantidadActual = this.banca.size();
 
-        //condicionalIfElseDirigeElFlujo
-        if (nuevoPokemon != null) {
-            if (cantidadActual < limiteBanca) {
-                this.banca.add(nuevoPokemon);
-                System.out.println(this.nombre + " ha jugado a " + nuevoPokemon.getNombre() + " a la banca.");
+        //puro if else anidado para controlar el flujo sin dramas
+        if (indiceMano >= 0) {
+            if (indiceMano < this.mano.size()) {
+                cartaSeleccionada = this.mano.get(indiceMano);
+                
+                //aca aplicamos el instanceof para asegurarnos que sea un pokemon y no otra cosa
+                if (cartaSeleccionada instanceof CartaPokemon) {
+                    if (cantidadActual < limiteBanca) {
+                        nuevoPokemon = (CartaPokemon) cartaSeleccionada;
+                        this.banca.add(nuevoPokemon);
+                        this.mano.remove(indiceMano); //la sacamos de la mano para no clonar cartas
+                        System.out.println(this.nombre + " ha jugado a " + nuevoPokemon.getNombre() + " a la banca desde su mano.");
+                    } else {
+                        System.out.println("La banca ya esta llena (limite de 5 Pokemon).");
+                    }
+                } else {
+                    System.out.println("Error: La carta seleccionada no es un Pokemon.");
+                }
             } else {
-                System.out.println("La banca ya esta llena (limite de 5 Pokemon).");
+                System.out.println("Error: Indice de la mano invalido.");
             }
         } else {
-            System.out.println("Error: El Pokemon a jugar no es valido.");
+            System.out.println("Error: El indice debe ser mayor o igual a cero.");
         }
 
-        //retornoExplicitoAlFinalDeLaFuncion
+        //retorno explicito
         return;
     }
 
-    //metodoParaCambiarPokemonActivo
+    //metodo para subir a un pokemon de la banca al combate
     public void cambiarPokemonActivo(int indiceBanca) {
-        //variablesLocalesDefinidasAlInicioDeLaFuncion
+        //variables al inicio de la funcion
         CartaPokemon pokemonSeleccionado;
         CartaPokemon pokemonAnterior;
 
-        //condicionalIfElseDirigeElFlujo
+        //if else manejando el flujo de los indices
         if (indiceBanca >= 0) {
             if (indiceBanca < this.banca.size()) {
                 pokemonSeleccionado = this.banca.get(indiceBanca);
                 pokemonAnterior = this.pokemonActivo;
 
-                //elPokemonSeleccionadoPasaASerElActivo
+                //pasamos el seleccionado a activo y lo borramos de la banca
                 this.pokemonActivo = pokemonSeleccionado;
                 this.banca.remove(indiceBanca);
 
-                //siHabiaUnPokemonActivoAnteriorRegresaALaBanca
+                //si ya teniamos uno peleando lo devolvemos a la banca para no perderlo
                 if (pokemonAnterior != null) {
                     this.banca.add(pokemonAnterior);
                     System.out.println(pokemonAnterior.getNombre() + " regresa a la banca.");
@@ -115,90 +133,140 @@ public class Jugador {
             System.out.println("Error: El indice debe ser mayor o igual a cero.");
         }
 
-        //retornoExplicitoAlFinalDeLaFuncion
+        //el buen return explicito
         return;
     }
 
+    //metodo para ponerle una energia al pokemon que esta activo
+    public void unirEnergiaActivo(int indiceMano) {
+        //variables listas arriba
+        Carta cartaSeleccionada;
+        CartaEnergia nuevaEnergia;
 
-
-//metodoParaUnirEnergiaAlActivo
-    public void unirEnergiaActivo(CartaEnergia energia) {
-        //condicionalIfElseDirigeElFlujo
+        //controlando que no falte nada con if else
         if (this.pokemonActivo != null) {
-            if (energia != null) {
-                this.pokemonActivo.unirEnergia(energia);
+            if (indiceMano >= 0) {
+                if (indiceMano < this.mano.size()) {
+                    cartaSeleccionada = this.mano.get(indiceMano);
+
+                    //verificamos con instanceof que sea de energia para no meterle un entrenador por error
+                    if (cartaSeleccionada instanceof CartaEnergia) {
+                        nuevaEnergia = (CartaEnergia) cartaSeleccionada;
+                        this.pokemonActivo.unirEnergia(nuevaEnergia);
+                        this.mano.remove(indiceMano); //se descuenta de la mano
+                    } else {
+                        System.out.println("Error: La carta seleccionada no es de Energia.");
+                    }
+                } else {
+                    System.out.println("Error: Indice de la mano invalido.");
+                }
             } else {
-                System.out.println("Error: Carta de energia invalida.");
+                System.out.println("Error: El indice debe ser mayor o igual a cero.");
             }
         } else {
             System.out.println("Error: No hay un Pokemon activo para unirle energia.");
         }
         
-        //retornoExplicitoAlFinalDeLaFuncion
+        //retorno explicito
         return;
     }
 
-    //metodoParaAtacarConElActivo
-    public void atacarConActivo(int indiceAtaque) {
-        //condicionalIfElseDirigeElFlujo
-        if (this.pokemonActivo != null) {
-            this.pokemonActivo.atacar(indiceAtaque);
-        } else {
-            System.out.println("Error: No hay un Pokemon activo para realizar el ataque.");
-        }
-        
-        //retornoExplicitoAlFinalDeLaFuncion
-        return;
-    }
+    //metodo para evolucionar al pokemon usando una carta de la mano
+    public void evolucionarActivo(int indiceMano) {
+        //declaraciones iniciales
+        Carta cartaSeleccionada;
+        CartaPokemon nuevaFase;
 
-//metodoParaEvolucionarElPokemonActivo
-    public void evolucionarActivo(CartaPokemon nuevaFase) {
-        //condicionalIfElseDirigeElFlujo
+        //if else dirigiendo todo el show
         if (this.pokemonActivo != null) {
-            if (nuevaFase != null) {
-                System.out.println("!Que esta pasando! " + this.pokemonActivo.getNombre() + " esta evolucionando a " + nuevaFase.getNombre() + "!");
-                //reemplazamosElPokemonActivoPorSuEvolucion
-                this.pokemonActivo = nuevaFase;
+            if (indiceMano >= 0) {
+                if (indiceMano < this.mano.size()) {
+                    cartaSeleccionada = this.mano.get(indiceMano);
+
+                    //instanceof salvando la nota para validar la evolucion
+                    if (cartaSeleccionada instanceof CartaPokemon) {
+                        nuevaFase = (CartaPokemon) cartaSeleccionada;
+                        System.out.println("!Que esta pasando! " + this.pokemonActivo.getNombre() + " esta evolucionando a " + nuevaFase.getNombre() + "!");
+                        this.pokemonActivo = nuevaFase;
+                        this.mano.remove(indiceMano); //chao de la mano
+                    } else {
+                        System.out.println("Error: La carta seleccionada no es un Pokemon para evolucionar.");
+                    }
+                } else {
+                    System.out.println("Error: Indice de la mano invalido.");
+                }
             } else {
-                System.out.println("Error: La carta de evolucion no es valida.");
+                System.out.println("Error: El indice debe ser mayor o igual a cero.");
             }
         } else {
             System.out.println("Error: No hay un Pokemon activo para evolucionar.");
         }
         
-        //retornoExplicitoAlFinalDeLaFuncion
+        //retornamos
         return;
     }
 
-    //metodoParaUsarUnaCartaDeEntrenador
-    public void usarEntrenador(CartaEntrenador cartaEntrenador) {
-        //condicionalIfElseDirigeElFlujo
-        if (cartaEntrenador != null) {
-            System.out.println(this.nombre + " va a usar una carta de Entrenador de su mano...");
-            //llamamosAlMetodoJugarQueHeredaDeCarta
-            cartaEntrenador.jugar();
+    //metodo clave para usar el entrenador y que se vaya al descarte
+    public void usarEntrenador(int indiceMano) {
+        //variables arribita
+        Carta cartaSeleccionada;
+        CartaEntrenador cartaEntrenador;
+
+        //guiando el flujo con los condicionales
+        if (indiceMano >= 0) {
+            if (indiceMano < this.mano.size()) {
+                cartaSeleccionada = this.mano.get(indiceMano);
+
+                //validamos que sea entrenador antes de usarla
+                if (cartaSeleccionada instanceof CartaEntrenador) {
+                    cartaEntrenador = (CartaEntrenador) cartaSeleccionada;
+                    System.out.println(this.nombre + " usa la carta de Entrenador: " + cartaEntrenador.getNombre());
+                    
+                    //aprovechando el polimorfismo llamando al metodo jugar
+                    cartaEntrenador.jugar();
+                    
+                    //cumpliendo con la pauta: la carta usada se va al descarte y sale de la mano
+                    this.pilaDescarte.add(cartaEntrenador);
+                    this.mano.remove(indiceMano);
+                    System.out.println("La carta " + cartaEntrenador.getNombre() + " fue enviada a la pila de descarte.");
+
+                } else {
+                    System.out.println("Error: La carta seleccionada no es un Entrenador.");
+                }
+            } else {
+                System.out.println("Error: Indice de la mano invalido.");
+            }
         } else {
-            System.out.println("Error: La carta de entrenador no es valida.");
+            System.out.println("Error: El indice debe ser mayor o igual a cero.");
         }
         
-        //retornoExplicitoAlFinalDeLaFuncion
+        //retorno explicito final
         return;
     }
 
-    //metodoParaUsarHabilidadDelActivo
+    //metodo corto para usar la habilidad
     public void usarHabilidadActivo() {
-        //condicionalIfElseDirigeElFlujo
+        //condicional if else basico
         if (this.pokemonActivo != null) {
             this.pokemonActivo.usarHabilidad();
         } else {
             System.out.println("Error: No hay un Pokemon activo para usar una habilidad.");
         }
         
-        //retornoExplicitoAlFinalDeLaFuncion
+        //retorno
         return;
     }
 
-
-
-
+    //metodo para mandar el ataque
+    public void atacarConActivo(int indiceAtaque) {
+        //condicional if else
+        if (this.pokemonActivo != null) {
+            this.pokemonActivo.atacar(indiceAtaque);
+        } else {
+            System.out.println("Error: No hay un Pokemon activo para realizar el ataque.");
+        }
+        
+        //retorno
+        return;
+    }
 }

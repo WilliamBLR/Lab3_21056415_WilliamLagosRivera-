@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        //variablesDefinidasExplicitamenteAlInicio
+        //definiendo las variables al inicio para respetar la estructura
         Scanner entradaConsola;
         int opcionSeleccionada;
         boolean sistemaEjecutandose;
@@ -13,13 +13,12 @@ public class Main {
         ArrayList<Ataque> inventarioAtaquesGlobal;
         int generadorId;
         
-        //variablesParaElJuegoActivo
+        //variables para la partida de prueba que pide el lab
         Mazo mazoPrueba;
         Jugador jugadorPrueba;
-        CartaPokemon cartaPruebaRobo;
-        Ataque ataquePrueba;
+        CartaPokemon pikachuPrueba;
 
-        //inicializacionDeVariables
+        //inicializando todo para que no nos tire el tipico null pointer
         entradaConsola = new Scanner(System.in);
         opcionSeleccionada = -1;
         sistemaEjecutandose = true;
@@ -28,21 +27,24 @@ public class Main {
         inventarioAtaquesGlobal = new ArrayList<Ataque>();
         generadorId = 1;
 
-        //inicializacionDeEntornosDePrueba
+        //cargando los datos por defecto para que el profe revise rapido
+        System.out.println("[Carga Automatica] Preparando partida para la revision del profe...");
         mazoPrueba = new Mazo(99);
-        //leAgregamosUnParDeCartasFalsasAlMazoParaPoderBarajarlo
-        mazoPrueba.agregarCarta(new CartaEnergia(101, "Energia Agua", "Agua"));
-        mazoPrueba.agregarCarta(new CartaEnergia(102, "Energia Fuego", "Fuego"));
-        
         jugadorPrueba = new Jugador(1, "Ash Ketchum", mazoPrueba);
-        cartaPruebaRobo = new CartaPokemon(999, "Pikachu", 50, "Electrico");
-        ataquePrueba = new Ataque(888, "Impactrueno", 40);
         
-        //leEnsenamosElAtaqueAlPokemonDePruebaYLeDamosUnaHabilidad
-        cartaPruebaRobo.aprenderAtaque(ataquePrueba);
-        cartaPruebaRobo.setHabilidad("Electricidad Estatica");
+        //creamos al pikachu salvador y le pasamos un ataque
+        pikachuPrueba = new CartaPokemon(101, "Pikachu", 50, "Electrico");
+        pikachuPrueba.aprenderAtaque(new Ataque(888, "Impactrueno", 40));
+        
+        //mandando cartas directo a la mano para probar altiro
+        jugadorPrueba.robarCarta(pikachuPrueba);
+        jugadorPrueba.robarCarta(new CartaEnergia(102, "Energia Electrica", "Electrico"));
+        jugadorPrueba.robarCarta(new CartaPokemon(103, "Raichu", 90, "Electrico"));
+        jugadorPrueba.robarCarta(new CartaEntrenador(104, "Pocion Maxima", "Restaura HP"));
+        
+        System.out.println("[Carga Automatica] Lista. Tienes 4 cartas listas en tu mano.");
 
-        //bucleWhileParaIterarElMenu
+        //bucle while infinito para mantener el menu vivo
         while (sistemaEjecutandose) {
             System.out.println("######## POKEMON TCG - Paradigmas OOP ########");
             System.out.println("Bienvenido. Seleccione una opcion:");
@@ -68,11 +70,11 @@ public class Main {
             System.out.print("\nIngrese su opcion: ");
 
             opcionSeleccionada = entradaConsola.nextInt();
-            entradaConsola.nextLine(); //limpiarElBufferDeEntrada
+            entradaConsola.nextLine(); //limpiando el enter que queda flotando en el buffer
 
-            //condicionalIfElseIfElseDirigeElFlujo
+            //puro if else anidado guiando el flujo segun la opcion
             if (opcionSeleccionada == 1) {
-                //variablesLocalesDefinidasAlInicioDeLaFuncion
+                //declarando variables arriba
                 String nombreEnergia;
                 String tipoEnergia;
 
@@ -87,7 +89,7 @@ public class Main {
                 generadorId = generadorId + 1;
 
             } else if (opcionSeleccionada == 2) {
-                //variablesLocalesDefinidasAlInicioDeLaFuncion
+                //variables locales arriba
                 String nombreAtaque;
                 int danoAtaque;
 
@@ -96,14 +98,14 @@ public class Main {
                 nombreAtaque = entradaConsola.nextLine();
                 System.out.print("Ingrese el dano base del ataque: ");
                 danoAtaque = entradaConsola.nextInt();
-                entradaConsola.nextLine(); //limpiarElBufferDeEntrada
+                entradaConsola.nextLine(); //limpiando el buffer denuevo
 
                 inventarioAtaquesGlobal.add(new Ataque(generadorId, nombreAtaque, danoAtaque));
                 System.out.println("Ataque " + nombreAtaque + " creado exitosamente.");
                 generadorId = generadorId + 1;
 
             } else if (opcionSeleccionada == 3) {
-                //variablesLocalesDefinidasAlInicioDeLaFuncion
+                //variables al principio
                 String nombrePokemon;
                 int hpPokemon;
                 String tipoPokemon;
@@ -113,7 +115,7 @@ public class Main {
                 nombrePokemon = entradaConsola.nextLine();
                 System.out.print("Ingrese los HP (Puntos de Vida): ");
                 hpPokemon = entradaConsola.nextInt();
-                entradaConsola.nextLine(); //limpiarElBufferDeEntrada
+                entradaConsola.nextLine(); //limpiando el scanner
                 System.out.print("Ingrese el tipo (Fuego, Agua, etc.): ");
                 tipoPokemon = entradaConsola.nextLine();
 
@@ -122,7 +124,7 @@ public class Main {
                 generadorId = generadorId + 1;
 
             } else if (opcionSeleccionada == 4) {
-                //variablesLocalesDefinidasAlInicioDeLaFuncion
+                //variables iniciales
                 String nombreEntrenador;
                 String efectoEntrenador;
 
@@ -136,7 +138,6 @@ public class Main {
                 System.out.println("Entrenador " + nombreEntrenador + " creado exitosamente.");
                 generadorId = generadorId + 1;
 
-
             } else if (opcionSeleccionada == 5) {
                 System.out.println("[Sistema] Has seleccionado: Crear mazo.");
                 inventarioMazosGlobal.add(new Mazo(generadorId));
@@ -147,64 +148,100 @@ public class Main {
                 System.out.println("[Sistema] Barajando el mazo...");
                 mazoPrueba.barajar();
 
-
-                
             } else if (opcionSeleccionada == 7) {
-                //variablesLocalesDefinidasAlInicioDeLaFuncion
+                //definiendo la moneda arriba
                 int resultadoMoneda;
 
                 System.out.println("[Sistema] Iniciando juego con los mazos 0 y 1...");
                 
-                //generamosUnNumeroCeroOUnoParaLaMoneda
+                //tirando el random para cachar quien empieza
                 resultadoMoneda = (int) (Math.random() * 2);
 
-                //condicionalIfElseDirigeElFlujo
+                //if else pa avisar el resultado
                 if (resultadoMoneda == 0) {
                     System.out.println("[Sistema] La moneda decidio que comienza el Jugador 1.");
                 } else {
                     System.out.println("[Sistema] La moneda decidio que comienza el Jugador 2.");
                 }
-                
                 System.out.println("[Sistema] Juego iniciado correctamente.");
-
-
-
 
             } else if (opcionSeleccionada == 9) {
                 System.out.println("[Sistema] Mostrando el estado del juego...");
                 jugadorPrueba.mostrarEstado();
 
             } else if (opcionSeleccionada == 10) {
+                //indice de la mano
+                int indiceMano;
+
                 System.out.println("[Sistema] Jugando Pokemon a la banca...");
-                jugadorPrueba.jugarPokemonBanca(cartaPruebaRobo);
+                System.out.print("Ingrese el indice de la carta en su mano (ej: 0): ");
+                indiceMano = entradaConsola.nextInt();
+                entradaConsola.nextLine(); //buffer
+
+                jugadorPrueba.jugarPokemonBanca(indiceMano);
 
             } else if (opcionSeleccionada == 11) {
+                //variable pa la banca
+                int indiceBanca;
+
                 System.out.println("[Sistema] Cambiando Pokemon activo...");
-                jugadorPrueba.cambiarPokemonActivo(0);
+                System.out.print("Ingrese el indice del Pokemon en la banca que desea subir (ejemplo: 0): ");
+                indiceBanca = entradaConsola.nextInt();
+                entradaConsola.nextLine(); //buffer
+
+                jugadorPrueba.cambiarPokemonActivo(indiceBanca);
 
             } else if (opcionSeleccionada == 12) {
                 System.out.println("[Sistema] Accion de robar carta activada...");
-                jugadorPrueba.robarCarta(cartaPruebaRobo);
+                jugadorPrueba.robarCarta(new CartaPokemon(500, "Bulbasaur", 60, "Planta"));
                 
             } else if (opcionSeleccionada == 13) {
+                //indice mano arriba
+                int indiceMano;
+
                 System.out.println("[Sistema] Uniendo energia al Pokemon activo...");
-                jugadorPrueba.unirEnergiaActivo(new CartaEnergia(777, "Energia Electrica", "Electrico"));
+                System.out.print("Ingrese el indice de la energia en su mano: ");
+                indiceMano = entradaConsola.nextInt();
+                entradaConsola.nextLine(); //buffer
+
+                jugadorPrueba.unirEnergiaActivo(indiceMano);
 
             } else if (opcionSeleccionada == 14) {
+                //variable inicial
+                int indiceMano;
+
                 System.out.println("[Sistema] Evolucionando al Pokemon activo...");
-                jugadorPrueba.evolucionarActivo(new CartaPokemon(1000, "Raichu", 90, "Electrico"));
+                System.out.print("Ingrese el indice de la evolucion en su mano: ");
+                indiceMano = entradaConsola.nextInt();
+                entradaConsola.nextLine(); //buffer
+
+                jugadorPrueba.evolucionarActivo(indiceMano);
 
             } else if (opcionSeleccionada == 15) {
+                //variable local al inicio
+                int indiceMano;
+
                 System.out.println("[Sistema] Usando carta de entrenador...");
-                jugadorPrueba.usarEntrenador(new CartaEntrenador(555, "Pocion Maxima", "Restaura todo el HP del Pokemon activo."));
+                System.out.print("Ingrese el indice del entrenador en su mano: ");
+                indiceMano = entradaConsola.nextInt();
+                entradaConsola.nextLine(); //buffer
+
+                jugadorPrueba.usarEntrenador(indiceMano);
 
             } else if (opcionSeleccionada == 16) {
                 System.out.println("[Sistema] Usando habilidad del Pokemon activo...");
                 jugadorPrueba.usarHabilidadActivo();
 
             } else if (opcionSeleccionada == 17) {
+                //declarando el indice del ataque
+                int indiceAtaque;
+
                 System.out.println("[Sistema] Ejecutando ataque del Pokemon activo...");
-                jugadorPrueba.atacarConActivo(0);
+                System.out.print("Ingrese el indice del ataque a utilizar (ejemplo: 0): ");
+                indiceAtaque = entradaConsola.nextInt();
+                entradaConsola.nextLine(); //buffer
+
+                jugadorPrueba.atacarConActivo(indiceAtaque);
 
             } else if (opcionSeleccionada == 0) {
                 System.out.println("[Sistema] Cerrando el juego... !Adios!");
@@ -219,7 +256,7 @@ public class Main {
 
         entradaConsola.close();
 
-        //retornoExplicito
+        //el retorno explicito de rigor aunque sea un void
         return;
     }
 }
