@@ -1,31 +1,28 @@
 public class Ataque {
-    //variablesDefinidasExplicitamenteAlInicio
+    //definiendo las variables
     private int id;
     private String nombre;
-    private int danoBase;
+    private Efecto efectoAsociado; //aqui aplicamos la interfaz
 
-    //constructorDeLaClase
-    public Ataque(int id, String nombre, int danoBase) {
+    //constructor
+    public Ataque(int id, String nombre, Efecto efectoAsociado) {
         this.id = id;
         this.nombre = nombre;
-        this.danoBase = danoBase;
+        this.efectoAsociado = efectoAsociado;
     }
 
-    //metodoParaEjecutarElAtaque
+    //metodo para gatillar el ataque
     public void ejecutarAtaque() {
-        //variablesLocalesDefinidasAlInicioDeLaFuncion
-        String mensajeResultado;
-
-        //condicionalIfElseDirigeElFlujo
-        if (this.danoBase > 0) {
-            mensajeResultado = "El ataque " + this.nombre + " inflige " + this.danoBase + " puntos de dano.";
-            System.out.println(mensajeResultado);
+        //if else controlando el flujo
+        if (this.efectoAsociado != null) {
+            System.out.println("!El ataque " + this.nombre + " golpea con fuerza!");
+            //aqui se ejecuta la magia del polimorfismo
+            this.efectoAsociado.ejecutar();
         } else {
-            mensajeResultado = "El ataque " + this.nombre + " no inflige dano directo.";
-            System.out.println(mensajeResultado);
+            System.out.println("El ataque " + this.nombre + " no tiene efecto asociado.");
         }
-
-        //retornoExplicitoAlFinalDeLaFuncion
+        
+        //retorno explicito
         return;
     }
 }

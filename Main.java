@@ -32,15 +32,15 @@ public class Main {
         mazoPrueba = new Mazo(99);
         jugadorPrueba = new Jugador(1, "Ash Ketchum", mazoPrueba);
         
-        //creamos al pikachu salvador y le pasamos un ataque
+        //creamos al pikachu salvador y le pasamos un ataque con polimorfismo
         pikachuPrueba = new CartaPokemon(101, "Pikachu", 50, "Electrico");
-        pikachuPrueba.aprenderAtaque(new Ataque(888, "Impactrueno", 40));
+        pikachuPrueba.aprenderAtaque(new Ataque(888, "Impactrueno", new EfectoDanio(40)));
         
         //mandando cartas directo a la mano para probar altiro
         jugadorPrueba.robarCarta(pikachuPrueba);
         jugadorPrueba.robarCarta(new CartaEnergia(102, "Energia Electrica", "Electrico"));
         jugadorPrueba.robarCarta(new CartaPokemon(103, "Raichu", 90, "Electrico"));
-        jugadorPrueba.robarCarta(new CartaEntrenador(104, "Pocion Maxima", "Restaura HP"));
+        jugadorPrueba.robarCarta(new CartaEntrenador(104, "Pocion Maxima", new EfectoCurar(50)));
         
         System.out.println("[Carga Automatica] Lista. Tienes 4 cartas listas en tu mano.");
 
@@ -100,7 +100,8 @@ public class Main {
                 danoAtaque = entradaConsola.nextInt();
                 entradaConsola.nextLine(); //limpiando el buffer denuevo
 
-                inventarioAtaquesGlobal.add(new Ataque(generadorId, nombreAtaque, danoAtaque));
+                //inyectando el polimorfismo con EfectoDanio
+                inventarioAtaquesGlobal.add(new Ataque(generadorId, nombreAtaque, new EfectoDanio(danoAtaque)));
                 System.out.println("Ataque " + nombreAtaque + " creado exitosamente.");
                 generadorId = generadorId + 1;
 
@@ -124,17 +125,19 @@ public class Main {
                 generadorId = generadorId + 1;
 
             } else if (opcionSeleccionada == 4) {
-                //variables iniciales
+                //variables iniciales actualizadas para el efecto de curar
                 String nombreEntrenador;
-                String efectoEntrenador;
+                int curaEntrenador;
 
                 System.out.println("[Sistema] Has seleccionado: Crear carta de entrenador.");
                 System.out.print("Ingrese el nombre del entrenador o item: ");
                 nombreEntrenador = entradaConsola.nextLine();
-                System.out.print("Describa el efecto de la carta: ");
-                efectoEntrenador = entradaConsola.nextLine();
+                System.out.print("Ingrese la cantidad de HP que cura esta carta: ");
+                curaEntrenador = entradaConsola.nextInt();
+                entradaConsola.nextLine(); //buffer
 
-                inventarioCartasGlobal.add(new CartaEntrenador(generadorId, nombreEntrenador, efectoEntrenador));
+                //inyectando el polimorfismo con EfectoCurar
+                inventarioCartasGlobal.add(new CartaEntrenador(generadorId, nombreEntrenador, new EfectoCurar(curaEntrenador)));
                 System.out.println("Entrenador " + nombreEntrenador + " creado exitosamente.");
                 generadorId = generadorId + 1;
 
@@ -256,7 +259,7 @@ public class Main {
 
         entradaConsola.close();
 
-        //el retorno explicito de rigor aunque sea un void
+        //el retorno explicito que ni es tan necesario :V aunque sea un void
         return;
     }
 }

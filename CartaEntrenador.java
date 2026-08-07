@@ -1,29 +1,26 @@
 public class CartaEntrenador extends Carta {
-    //variablesDefinidasExplicitamenteAlInicio
-    private String efecto;
+    //variable usando la interfaz para respetar el requerimiento
+    private Efecto efectoAsociado;
 
-    //constructorDeLaClaseHija
-    public CartaEntrenador(int id, String nombre, String efecto) {
+    //constructor
+    public CartaEntrenador(int id, String nombre, Efecto efectoAsociado) {
         super(id, nombre);
-        this.efecto = efecto;
+        this.efectoAsociado = efectoAsociado;
     }
 
-    //implementacionDelMetodoAbstracto
+    //sobrescribiendo el metodo abstracto
     @Override
     public void jugar() {
-        //variablesLocalesDefinidasAlInicioDeLaFuncion
-        String mensajeAccion;
-
-        //condicionalIfElseDirigeElFlujo
-        if (this.efecto != null) {
-            mensajeAccion = "El entrenador " + this.nombre + " aplica el efecto: " + this.efecto;
-            System.out.println(mensajeAccion);
+        System.out.println("Activando carta entrenador: " + this.nombre);
+        
+        //if else pa evitar caidas y llamar al efecto
+        if (this.efectoAsociado != null) {
+            this.efectoAsociado.ejecutar();
         } else {
-            mensajeAccion = "Esta carta de entrenador no tiene efecto.";
-            System.out.println(mensajeAccion);
+            System.out.println("Esta carta no tiene efecto asociado.");
         }
-
-        //retornoExplicitoAlFinalDeLaFuncion
+        
+        //retorno explicito
         return;
     }
 }
