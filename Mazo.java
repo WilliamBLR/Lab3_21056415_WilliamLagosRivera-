@@ -15,21 +15,34 @@ public class Mazo {
     public void agregarCarta(Carta nuevaCarta) {
         //variablesLocalesDefinidasAlInicioDeLaFuncion
         int limiteCartas;
-        int cantidadActual;
 
         limiteCartas = 60;
-        cantidadActual = this.cartas.size();
 
         //condicionalIfElseDirigeElFlujo
-        if (cantidadActual < limiteCartas) {
+        if (this.cartas.size() < limiteCartas) {
             this.cartas.add(nuevaCarta);
-            System.out.println("Carta agregada exitosamente al mazo.");
         } else {
-            System.out.println("El mazo ya esta lleno con 60 cartas.");
+            System.out.println("Error: El mazo ya tiene 60 cartas.");
         }
-
+        
         //retornoExplicitoAlFinalDeLaFuncion
         return;
+    }
+
+    //metodoParaRobarLaPrimeraCartaDelMazo
+    public Carta robarCartaSuperior() {
+        //variablesLocalesDefinidasAlInicioDeLaFuncion
+        Carta cartaRobada;
+
+        //condicionalIfElseDirigeElFlujo
+        if (this.cartas.size() > 0) {
+            //sacamosLaCartaDeLaPosicionCero
+            cartaRobada = this.cartas.remove(0);
+        } else {
+            cartaRobada = null;
+        }
+
+        return cartaRobada;
     }
 
     //metodoParaBarajarElMazo
@@ -47,17 +60,65 @@ public class Mazo {
             for (int i = 0; i < totalCartas; i = i + 1) {
                 indiceAleatorio = (int) (Math.random() * totalCartas);
                 cartaTemporal = this.cartas.get(i);
-                
-                //intercambiamosLaCartaEnLaPosicionActualPorUnaAlAzar
                 this.cartas.set(i, this.cartas.get(indiceAleatorio));
                 this.cartas.set(indiceAleatorio, cartaTemporal);
             }
-            System.out.println("El mazo ha sido barajado exitosamente al azar.");
+            System.out.println("Mazo barajado exitosamente.");
         } else {
-            System.out.println("Error: El mazo esta vacio, no se puede barajar.");
+            System.out.println("Mazo vacio.");
         }
-
+        
         //retornoExplicitoAlFinalDeLaFuncion
         return;
     }
+
+    //metodoParaValidarReglasDelMazo
+    public boolean esValido() {
+        //variablesLocalesDefinidasAlInicioDeLaFuncion
+        boolean valido;
+        boolean tieneBasico;
+        Carta cartaActual;
+        CartaPokemon pokemonActual;
+
+        valido = true;
+        tieneBasico = false;
+
+        //condicionalIfElseDirigeElFlujo
+        if (this.cartas.size() == 60) {
+            //bucleForParaBuscarPokemonBasico
+            for (int i = 0; i < this.cartas.size(); i = i + 1) {
+                cartaActual = this.cartas.get(i);
+                if (cartaActual instanceof CartaPokemon) {
+                    pokemonActual = (CartaPokemon) cartaActual;
+                    
+                    //siEvolucionaDeEsNullEntoncesEsBasico
+                    if (pokemonActual.getEvolucionaDe() == null) {
+                        tieneBasico = true;
+                    } else {
+                        //noHaceNada
+                    }
+                } else {
+                    //noHaceNada
+                }
+            }
+
+            //siTerminoDeBuscarYNoHayBasicoEsInvalido
+            if (tieneBasico == false) {
+                valido = false;
+                System.out.println("Error: El mazo no tiene Pokemon basicos.");
+            } else {
+                //noHaceNada
+            }
+            
+        } else {
+            valido = false;
+            System.out.println("Error: El mazo no tiene exactamente 60 cartas.");
+        }
+
+        return valido;
+    }
+
+    //getter para ver el tamano del mazo
+    public ArrayList<Carta> getCartas() { return this.cartas; }
+
 }

@@ -1,88 +1,56 @@
 import java.util.ArrayList;
 
 public class CartaPokemon extends Carta {
-    //variablesDefinidasExplicitamenteAlInicio
-    private int hp;
+    //definiendoLasVariablesExigidasEnRF05
+    private int hpBase;
     private String tipo;
-    private ArrayList<CartaEnergia> energiasUnidas;
+    private String evolucionaDe;
+    private String debilidad;
+    private String resistencia;
+    private int costoRetirada;
+    private boolean esEX;
+    private Ataque habilidad;
     private ArrayList<Ataque> ataquesDisponibles;
-    private String habilidad;
 
-    //constructorDeLaClaseHija
-    public CartaPokemon(int id, String nombre, int hp, String tipo) {
+    //constructorDeLaClase
+    public CartaPokemon(int id, String nombre, int hpBase, String tipo, String evolucionaDe, String debilidad, String resistencia, int costoRetirada, boolean esEX) {
         super(id, nombre);
-        this.hp = hp;
+        this.hpBase = hpBase;
         this.tipo = tipo;
-        this.energiasUnidas = new ArrayList<CartaEnergia>();
+        this.evolucionaDe = evolucionaDe; //seraNullSiEsBasico
+        this.debilidad = debilidad;
+        this.resistencia = resistencia;
+        this.costoRetirada = costoRetirada;
+        this.esEX = esEX;
+        this.habilidad = null;
         this.ataquesDisponibles = new ArrayList<Ataque>();
-        this.habilidad = null; //inicialmenteSinHabilidad
     }
 
-    //metodoParaAgregarEnergia
-    public void unirEnergia(CartaEnergia nuevaEnergia) {
-        //condicionalIfElseDirigeElFlujo
-        if (nuevaEnergia != null) {
-            this.energiasUnidas.add(nuevaEnergia);
-            System.out.println("Energia unida correctamente a " + this.nombre + ". Total energias: " + this.energiasUnidas.size());
-        } else {
-            System.out.println("Error: La carta de energia no es valida.");
-        }
-        
-        //retornoExplicitoAlFinalDeLaFuncion
-        return;
-    }
+    //metodosGettersBasicosParaLasReglasDeJuego
+    public int getHpBase() { return this.hpBase; }
+    public String getTipo() { return this.tipo; }
+    public String getEvolucionaDe() { return this.evolucionaDe; }
+    public String getDebilidad() { return this.debilidad; }
+    public String getResistencia() { return this.resistencia; }
+    public int getCostoRetirada() { return this.costoRetirada; }
+    public boolean getEsEX() { return this.esEX; }
+    public ArrayList<Ataque> getAtaquesDisponibles() { return this.ataquesDisponibles; }
 
     //metodoParaEnsenarAtaque
     public void aprenderAtaque(Ataque nuevoAtaque) {
         //condicionalIfElseDirigeElFlujo
         if (nuevoAtaque != null) {
             this.ataquesDisponibles.add(nuevoAtaque);
-            System.out.println(this.nombre + " ha aprendido un nuevo ataque.");
         } else {
-            System.out.println("Error: El ataque no es valido.");
+            System.out.println("Error: Ataque nulo.");
         }
-        
-        //retornoExplicitoAlFinalDeLaFuncion
-        return;
-    }
-
-    //metodoParaAtacar
-    public void atacar(int indiceAtaque) {
-        //variablesLocalesDefinidasAlInicioDeLaFuncion
-        Ataque ataqueSeleccionado;
-
-        //condicionalIfElseDirigeElFlujo
-        if (indiceAtaque >= 0) {
-            if (indiceAtaque < this.ataquesDisponibles.size()) {
-                ataqueSeleccionado = this.ataquesDisponibles.get(indiceAtaque);
-                System.out.println(this.nombre + " se prepara para atacar...");
-                ataqueSeleccionado.ejecutarAtaque();
-            } else {
-                System.out.println("Error: Indice de ataque invalido o el Pokemon no conoce ese ataque.");
-            }
-        } else {
-            System.out.println("Error: El indice debe ser mayor o igual a cero.");
-        }
-        
         //retornoExplicitoAlFinalDeLaFuncion
         return;
     }
 
     //metodoParaAsignarHabilidad
-    public void setHabilidad(String nuevaHabilidad) {
+    public void setHabilidad(Ataque nuevaHabilidad) {
         this.habilidad = nuevaHabilidad;
-        return;
-    }
-
-    //metodoParaUsarLaHabilidad
-    public void usarHabilidad() {
-        //condicionalIfElseDirigeElFlujo
-        if (this.habilidad != null) {
-            System.out.println(this.nombre + " activa su habilidad especial: " + this.habilidad);
-        } else {
-            System.out.println(this.nombre + " no tiene ninguna habilidad especial asignada.");
-        }
-        
         //retornoExplicitoAlFinalDeLaFuncion
         return;
     }
@@ -90,21 +58,7 @@ public class CartaPokemon extends Carta {
     //implementacionDelMetodoAbstracto
     @Override
     public void jugar() {
-        //variablesLocalesDefinidasAlInicioDeLaFuncion
-        boolean puedeEntrarABanca;
-        String mensajeEstado;
-
-        //condicionalIfElseDirigeElFlujo
-        if (this.hp > 0) {
-            puedeEntrarABanca = true;
-            mensajeEstado = this.nombre + " ha entrado a la banca.";
-            System.out.println(mensajeEstado);
-        } else {
-            puedeEntrarABanca = false;
-            mensajeEstado = this.nombre + " no tiene HP para jugar.";
-            System.out.println(mensajeEstado);
-        }
-
+        System.out.println("Jugando carta Pokemon: " + this.nombre);
         //retornoExplicitoAlFinalDeLaFuncion
         return;
     }
