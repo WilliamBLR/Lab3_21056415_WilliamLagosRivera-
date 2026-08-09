@@ -1,0 +1,175 @@
+@startuml
+title diagrama de diseno - pokemon tcg
+
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam shadowing false
+
+abstract class "Carta_LagosRivera_21056415" as Carta {
+  - siguienteId : int
+  - id : int
+  - expansion : String
+  - numero : int
+  - nombre : String
+  + getId() : int
+  + getNombre() : String
+  + getFamilia() : String
+  + comoTextoCatalogo() : String
+}
+
+class "CartaEnergia_LagosRivera_21056415" as Energia {
+  - tipoEnergia : String
+  + getTipoEnergia() : String
+  + normalizarTipoBasico(tipo) : String
+  + normalizarTipoCosto(tipo) : String
+}
+
+class "CartaPokemon_LagosRivera_21056415" as Pokemon {
+  - evolucionaDe : String
+  - ps : int
+  - tipo : String
+  - debilidad : String
+  - resistencia : String
+  - costoRetirada : int
+  - esEx : boolean
+  - habilidad : Ataque
+  - ataques : List<Ataque>
+  + esBasico() : boolean
+  + buscarAtaque(nombre) : Ataque
+}
+
+class "CartaEntrenador_LagosRivera_21056415" as Entrenador {
+  - tipo : String
+  - texto : String
+  - efectoAsociado : Efecto
+  + usar(juego, usuario, objetivo, argumentos) : int
+}
+
+class "Ataque_LagosRivera_21056415" as Ataque {
+  - siguienteId : int
+  - id : int
+  - costo : Map<String, Integer>
+  - nombre : String
+  - descripcion : String
+  - danoBase : int
+  - efectoAsociado : Efecto
+  + esHabilidadValida() : boolean
+  + puedePagarseCon(energias) : boolean
+  + ejecutarEfecto(...) : int
+}
+
+interface "Efecto_LagosRivera_21056415" as Efecto {
+  + ejecutar(juego, usuario, origen, objetivo, dano, argumentos) : int
+  + getNombre() : String
+}
+
+class "EfectoSinEfecto_LagosRivera_21056415" as SinEfecto
+class "EfectoDanio_LagosRivera_21056415" as EfectoDanio
+class "EfectoCurar_LagosRivera_21056415" as EfectoCurar
+class "EfectoRobar_LagosRivera_21056415" as EfectoRobar
+class "EfectoEstado_LagosRivera_21056415" as EfectoEstado
+
+class "CartaEnJuego_LagosRivera_21056415" as CartaEnJuego {
+  - siguienteIdInstancia : long
+  - idInstancia : long
+  - cartaActual : CartaPokemon
+  - cartasEvolucionadas : List<CartaPokemon>
+  - energiasUnidas : List<CartaEnergia>
+  - danoAcumulado : int
+  - turnosEnJuego : int
+  - estadoEspecial : String
+  - ultimoTurnoHabilidad : int
+  + unirEnergia(energia) : void
+  + recibirDano(dano, tipo) : int
+  + curar(cantidad) : void
+  + evolucionar(carta) : void
+  + comoTextoDetallado() : String
+}
+
+class "Mazo_LagosRivera_21056415" as Mazo {
+  - siguienteId : int
+  - id : int
+  - nombre : String
+  - cartas : List<Carta>
+  + barajar() : void
+  + robarCartaSuperior() : Carta
+  + devolverCartas(cartas) : void
+  + crearCopiaJugable() : Mazo
+}
+
+class "Jugador_LagosRivera_21056415" as Jugador {
+  - id : int
+  - nombre : String
+  - mazo : Mazo
+  - mano : List<Carta>
+  - banca : List<CartaEnJuego>
+  - pokemonActivo : CartaEnJuego
+  - pilaDescarte : List<Carta>
+  - premios : List<Carta>
+  + prepararManoInicial(aleatorio) : void
+  + jugarPokemonABanca(indice) : CartaEnJuego
+  + cambiarPokemonActivo(indice) : int
+  + tomarPremios(cantidad) : int
+}
+
+class "Juego_LagosRivera_21056415" as Juego {
+  - jugador1 : Jugador
+  - jugador2 : Jugador
+  - jugadorActual : Jugador
+  - ganador : Jugador
+  - estadoPartida : String
+  - roboDisponible : boolean
+  - energiaUsada : boolean
+  - partidarioUsado : boolean
+  - reposicionObligatoria : boolean
+  - numeroTurno : int
+  + iniciarJuego() : String
+  + mostrarJuego() : String
+  + jugarABanca(indice) : String
+  + cambiarPokemonActivo(indice) : String
+  + robarCarta() : String
+  + usarCartaEnergia(id, indice) : String
+  + evolucionarPokemon(id, indice) : String
+  + usarCartaEntrenador(...) : String
+  + usarHabilidadPokemon(...) : String
+  + usarAtaquePokemon(...) : String
+}
+
+class Main {
+  - cartas : List<Carta>
+  - ataques : List<Ataque>
+  - mazos : List<Mazo>
+  - partidaActual : Juego
+  + main(args) : void
+}
+
+Carta <|-- Energia
+Carta <|-- Pokemon
+Carta <|-- Entrenador
+
+Efecto <|.. SinEfecto
+Efecto <|.. EfectoDanio
+Efecto <|.. EfectoCurar
+Efecto <|.. EfectoRobar
+Efecto <|.. EfectoEstado
+
+Ataque o-- "1" Efecto
+Pokemon o-- "0..1" Ataque : habilidad
+Pokemon o-- "0..3" Ataque : ataques
+Entrenador o-- "1" Efecto
+
+CartaEnJuego --> "1" Pokemon : etapa actual
+CartaEnJuego o-- "0..*" Pokemon : etapas anteriores
+CartaEnJuego o-- "0..*" Energia : energias
+Mazo o-- "60" Carta
+Jugador *-- "1" Mazo
+Jugador *-- "0..*" Carta : mano/descarte/premios
+Jugador *-- "0..5" CartaEnJuego : banca
+Jugador *-- "0..1" CartaEnJuego : activo
+Juego *-- "2" Jugador
+Main --> Juego
+Main --> Carta
+Main --> Ataque
+Main --> Mazo
+
+@enduml

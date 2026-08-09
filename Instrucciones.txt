@@ -1,0 +1,43 @@
+laboratorio 3 pokemon tcg
+
+ambiente requerido
+- openjdk 11
+- consola o terminal
+- no usa librerias externas
+
+compilacion desde la carpeta que contiene los archivos java
+javac -encoding UTF-8 *.java
+
+generacion de documentacion
+javadoc -private -encoding UTF-8 -d doc *.java
+
+ejecucion
+java Main
+
+uso rapido para revision
+1. ejecutar java Main
+2. seleccionar la opcion 7
+3. dejar vacios los cuatro datos para usar los dos mazos y jugadores cargados
+4. seleccionar la opcion 9 para ver la mano y el estado de la partida
+5. usar la opcion 10 para poner un pokemon basico en banca
+6. usar la opcion 11 para poner ese pokemon como activo
+7. usar las opciones 12 a 17 para jugar el turno
+
+resumen del menu
+- opciones 1 a 6: crear cartas, ataques y mazos o barajar un mazo
+- opcion 7: iniciar una partida nueva e independiente
+- opcion 8: mostrar los catalogos cargados
+- opciones 9 a 17: jugar la partida actual
+- opcion 0: salir
+
+consideraciones
+- los indices de mano y banca aparecen al mostrar el juego
+- cada pokemon en juego muestra un id de instancia unico
+- para pasar el turno se usa la opcion 17 y se deja vacio el nombre del ataque
+- los argumentos adicionales se separan por coma y pueden dejarse vacios
+
+archivos de apoyo
+- autoevaluacion: Autoevaluacion_LagosRivera_21056415.txt
+- diagrama editable: DiagramaUML_LagosRivera_21056415.puml
+- diagrama en imagen: DiagramaUML_LagosRivera_21056415.png
+- documentacion javadoc: doc/index.html
